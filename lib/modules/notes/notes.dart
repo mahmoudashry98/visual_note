@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visual_note/layout/cubit/cubit.dart';
 import 'package:visual_note/layout/cubit/states.dart';
+import 'package:visual_note/modules/note_details/note_details.dart';
+import 'package:visual_note/shared/components/components.dart';
 
 class NotesScreen extends StatelessWidget {
   @override
@@ -11,10 +13,10 @@ class NotesScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: state is! AppGetProductLoadingState,
+          condition: state is! AppGetNoteLoadingState,
           builder: (context) => ListView.separated(
             physics: BouncingScrollPhysics(),
-            itemBuilder: (context ,index) => buildProductItem(),
+            itemBuilder: (context ,index) => buildProductItem(context),
             separatorBuilder: (context, index) => SizedBox(height: 5,),
             itemCount: 10,
           ),
@@ -26,7 +28,7 @@ class NotesScreen extends StatelessWidget {
 
 
 
-  Widget buildProductItem() {
+  Widget buildProductItem(context) {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 10.0,
@@ -89,6 +91,13 @@ class NotesScreen extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: (){
+                navigateTo(context, NoteDetailsScreen());
+              },
+              alignment: Alignment.bottomRight,
             )
           ],
         ),
