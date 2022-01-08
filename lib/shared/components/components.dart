@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 
 
-
-
-
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType keyboardType,
-  ValueChanged<String>? onSubmit,
-  ValueChanged<String>? onChange,
-  VoidCallback? onTap,
-  bool isPassword = false,
-  FormFieldValidator<String>? validate,
+  //FormFieldValidator<String>? validate,
   required String label,
   required IconData prefix,
   IconData? suffix,
@@ -22,12 +15,9 @@ Widget defaultFormField({
 
       controller: controller,
       keyboardType: keyboardType,
-      obscureText: isPassword,
       enabled: isClickable,
-      onFieldSubmitted: onSubmit,
-      onChanged: onChange,
-      onTap: onTap,
-      validator: validate,
+
+      //validator: validate,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(
@@ -44,4 +34,25 @@ Widget defaultFormField({
         border: OutlineInputBorder(),
 
       ),
+    );
+
+
+void navigateTo(context, widget) => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => widget,
+    ));
+
+void navigateAndFinish(
+    context,
+    widget,
+    ) =>
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+          (route) {
+        return false;
+      },
     );
