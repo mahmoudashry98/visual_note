@@ -32,8 +32,6 @@ class HomeLayoutScreen extends StatelessWidget {
                   icon: Icon(Icons.note_add), label: 'Create Note'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.note), label: 'Notes'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.details), label: 'Details'),
 
             ],
           ),
