@@ -1,12 +1,14 @@
 
-class NoteModel {
+class AddNoteModel {
+  String? id;
   late String title;
   late String image;
   late String description;
   late String dateTime;
   late bool status=false;
 
-  NoteModel({
+  AddNoteModel({
+     this.id,
     required this.title,
     required this.image,
     required this.description,
@@ -14,8 +16,9 @@ class NoteModel {
     required this.status,
   });
 
-  NoteModel.fromJson(Map<String, dynamic> json) {
+  AddNoteModel.fromJson(Map<String, dynamic> json) {
     title = json['title'];
+    id = json['id'];
     image = json['image'];
     description = json['description'];
     dateTime = json['dateTime'];
@@ -25,6 +28,7 @@ class NoteModel {
   Map<String, dynamic> toMap() {
     return {
       'title': title,
+      'id': id,
       'image': image,
       'description': description,
       'dateTime': dateTime,

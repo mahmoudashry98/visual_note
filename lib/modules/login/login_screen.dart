@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visual_note/layout/home_layout.dart';
 import 'package:visual_note/modules/login/cubit/cubit.dart';
 import 'package:visual_note/modules/register/register_screen.dart';
 import 'package:visual_note/shared/components/components.dart';
+import 'package:visual_note/shared/components/constants.dart';
+import 'package:visual_note/shared/network/local/cache_helper.dart';
 import 'cubit/state.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,7 +16,21 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => VisualNoteLoginCubit(),
       child: BlocConsumer<VisualNoteLoginCubit, VisualNoteLoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is VisualNoteLoginSuccessState) {
+            CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
+              uId = state.uId;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Login Success'),
+                duration: Duration(seconds: 4),
+                backgroundColor: Colors.green,
+              ));
+
+              print(CacheHelper.getData(key: 'uId').toString());
+              navigateAndFinish(context, HomeLayoutScreen());
+            });
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             backgroundColor: Colors.white,
@@ -68,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0)),
-                        color: Colors.red,
+                        color: Colors.amber,
                         onPressed: () {
                           VisualNoteLoginCubit.get(context).userLogin(
                             email: emailController.text,
@@ -79,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                           'Login',
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -111,7 +128,7 @@ class LoginScreen extends StatelessWidget {
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0)),
-                          color: Colors.red,
+                          color: Colors.amber,
                           onPressed: () {
                             navigateTo(context, RegisterScreen());
                           },
@@ -119,7 +136,7 @@ class LoginScreen extends StatelessWidget {
                             'Sign Up',
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),

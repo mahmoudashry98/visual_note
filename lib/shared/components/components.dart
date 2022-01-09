@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType keyboardType,
-  //FormFieldValidator<String>? validate,
+  FormFieldValidator<String>? validate,
   required String label,
   required IconData prefix,
   IconData? suffix,
@@ -17,7 +16,7 @@ Widget defaultFormField({
       keyboardType: keyboardType,
       enabled: isClickable,
 
-      //validator: validate,
+      validator: validate,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(
@@ -56,3 +55,4 @@ void navigateAndFinish(
         return false;
       },
     );
+

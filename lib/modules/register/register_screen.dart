@@ -20,24 +20,14 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => VisualNoteRegisterCubit(),
       child: BlocConsumer<VisualNoteRegisterCubit, VisualNoteRegisterStates>(
         listener: (context, state) {
-          if (state is VisualNoteCreateUserSuccessState) {
-            // CacheHelper.saveData(
-            //   key: 'uId',
-            //   value: state.uId,
-            // ).then((value) async
-            {
-
-              navigateAndFinish(
-                context,
-                HomeLayoutScreen(),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Thanks for Note'),
-                duration: Duration(seconds: 4),
-                backgroundColor: Colors.amber,
-              ));
-            }
-            //);
+          if(state is VisualNoteRegisterSuccessState)
+          {
+            navigateAndFinish(context, HomeLayoutScreen());
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Thanks for Sign Up'),
+              duration: Duration(seconds: 4),
+              backgroundColor: Colors.green,
+            ));
           }
         },
         builder: (context, state) {
@@ -133,7 +123,7 @@ class RegisterScreen extends StatelessWidget {
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0)),
-                        color: Colors.red,
+                        color: Colors.amber,
                         onPressed: () {
                           VisualNoteRegisterCubit.get(context).userRegister(
                             name: nameController.text,
@@ -146,7 +136,7 @@ class RegisterScreen extends StatelessWidget {
                           'Sign Up',
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -162,13 +152,7 @@ class RegisterScreen extends StatelessWidget {
                     SizedBox(
                       height: 25.0,
                     ),
-                    Container(
-                        height: 30.0,
-                        child: Center(
-                            child: Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/images/google.png'),
-                        ))),
+
                   ],
                 ),
               ),

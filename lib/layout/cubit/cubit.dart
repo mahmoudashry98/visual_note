@@ -5,35 +5,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:visual_note/layout/cubit/states.dart';
-import 'package:visual_note/models/note_model.dart';
+import 'package:visual_note/models/add_note_model.dart';
 import 'package:visual_note/models/user_model.dart';
 import 'package:visual_note/modules/creates_note/create_notes.dart';
 import 'package:visual_note/modules/notes/notes.dart';
-import 'package:visual_note/modules/note_details/note_details.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:visual_note/shared/components/constants.dart';
 
 
 class AppCubit extends Cubit<AppStates> {
+
   AppCubit() : super(AppInitialState());
 
   static AppCubit get(context) => BlocProvider.of(context);
 
   // json model that i use to receive data from Firestore
-  NoteModel? noteModel;
+  AddNoteModel? noteModel;
   UserModel? userModel;
+
 
   int currentIndex = 0;
   //toggle screens
   List<Widget> screens = [
     CreateNoteScreen(),
     NotesScreen(),
-    NoteDetailsScreen()
   ];
   //toggle titles
-  List<String> title = ['Create Note', 'Notes', 'Details'];
+  List<String> title = [
+    'Create Note',
+    'Notes',
+  ];
 
   void changeBottomNav(int index) {
+    if(index == 1) getNotes();
     currentIndex = index;
     emit(AppChangeBottomNavState());
   }
@@ -44,6 +48,7 @@ class AppCubit extends Cubit<AppStates> {
     value = bool;
     emit(AppCheckBoxState());
   }
+
 
   File? noteImage;
   var picker = ImagePicker();
@@ -75,6 +80,71 @@ class AppCubit extends Cubit<AppStates> {
       });
     }
   }
+  List <AddNoteModel> notes =[] ;
+  void getNotes() {
+      notes=[];
+
+      emit(AppGetUserLoadingState());
+      FirebaseFirestore.instance
+          .collection('notes')
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          notes.add(AddNoteModel.fromJson(element.data()));
+        });
+        emit(AppGetNotesSuccessState());
+      }).catchError((error) {
+        print(error.toString());
+        emit(AppGetNotesErrorState(error.toString()));
+      });
+  }
+  String imageNote = '';
+
+  void uploadImage(){
+    emit(AppUploadImageLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('notes/${Uri.file(noteImage!.path)
+        .pathSegments.last}')
+        .putFile(noteImage!).then((value){
+          value.ref.getDownloadURL().then((value) {
+            emit(AppUploadImageSuccessState());
+
+          }).catchError((error){
+            emit(AppUploadImageErrorState(error.toString()));
+
+          });
+    });
+  }
+
+  void updateNote({
+
+    required String title,
+    required String description,
+    required String dateTime,
+    required bool status,
+
+  }){
+
+    AddNoteModel model = AddNoteModel(
+      title: title,
+      image: imageNote,
+      description: description,
+      dateTime: dateTime,
+      status: status,
+    );
+
+    FirebaseFirestore.instance
+        .collection('notes')
+        .doc()
+        .update(model.toMap())
+        .then((value){
+      getNotes();
+    })
+        .catchError((error){
+      emit(AppUpdateNoteErrorState(error.toString()));
+    });
+  }
 
 
   void uploadNote({
@@ -82,6 +152,7 @@ class AppCubit extends Cubit<AppStates> {
     required String description,
     required bool status,
     required String dateTime,
+
   })
   {
     emit(AppCreateNoteLoadingState());
@@ -92,18 +163,21 @@ class AppCubit extends Cubit<AppStates> {
         .putFile(noteImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-          NoteModel model = NoteModel(
+        imageNote =value;
+          AddNoteModel model = AddNoteModel(
             title: title,
             description:description ,
             status: status,
             dateTime: dateTime,
             image: value,
+
           );
 
                 FirebaseFirestore.instance
                     .collection('notes')
                     .add(model.toMap())
                     .then((value) {
+
                   emit(AppCreateNoteSuccessState());
                 })
                     .catchError((error){
