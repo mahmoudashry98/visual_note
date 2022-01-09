@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visual_note/layout/cubit/cubit.dart';
 import 'package:visual_note/layout/cubit/states.dart';
+import 'package:visual_note/models/add_note_model.dart';
 import 'package:visual_note/modules/note_details/note_details.dart';
 import 'package:visual_note/shared/components/components.dart';
 
@@ -13,12 +14,17 @@ class NotesScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: state is! AppGetNoteLoadingState,
+          condition: AppCubit.get(context).notes.length > 0,
           builder: (context) => ListView.separated(
             physics: BouncingScrollPhysics(),
-            itemBuilder: (context ,index) => buildProductItem(context),
-            separatorBuilder: (context, index) => SizedBox(height: 5,),
-            itemCount: 10,
+            itemBuilder: (context, index) => buildProductItem(
+                model: AppCubit.get(context).notes[index],
+                context: context,
+                index: index),
+            separatorBuilder: (context, index) => SizedBox(
+              height: 5,
+            ),
+            itemCount: AppCubit.get(context).notes.length,
           ),
           fallback: (context) => Center(child: CircularProgressIndicator()),
         );
@@ -26,80 +32,91 @@ class NotesScreen extends StatelessWidget {
     );
   }
 
-
-
-  Widget buildProductItem(context) {
-    return Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      elevation: 10.0,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Container(
-              height: 120,
-              width: 120,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/image2.jpg'),
-                  )
+  Widget buildProductItem({required AddNoteModel model, context, index}) {
+    return InkWell(
+      onTap: (){
+        navigateTo(context, NoteDetailsScreen(model:  AppCubit.get(context).notes[index], index: index,));
+      },
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 10.0,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                      image: NetworkImage(model.image),
+                    )),
               ),
-            ),
-            SizedBox(width: 20,),
-            Expanded(
-              child: Container(
-                height: 130,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Title',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Container(
+                  height: 120,
+                  child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        model.title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        maxLines: 1,
                       ),
 
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Description',
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        model.description,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                         ),
                         maxLines: 1,
                       ),
-                    ),
-                    Text(
-                      'Status',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
+                      SizedBox(
+                        height: 40,
                       ),
-                    ),
-                    Text(
-                      '2022/1/6',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
+                      model.status
+                          ? Text(
+                              'Opened',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          : Text(
+                              'Closed',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                      Text(
+                        model.dateTime,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: (){
-                navigateTo(context, NoteDetailsScreen());
-              },
-              alignment: Alignment.bottomRight,
-            )
-          ],
+
+            ],
+          ),
         ),
       ),
     );

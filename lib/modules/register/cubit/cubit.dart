@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:visual_note/models/user_model.dart';
 import 'package:visual_note/modules/register/cubit/states.dart';
 
@@ -44,7 +43,6 @@ class VisualNoteRegisterCubit extends Cubit<VisualNoteRegisterStates> {
     required String uId,
   }) {
     UserModel userModel = UserModel(
-
       name: name,
       email: email,
       uId: uId,
