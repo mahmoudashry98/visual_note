@@ -25,9 +25,6 @@ class AppCreateNoteLoadingState extends AppStates {}
 class AppCreateNoteSuccessState extends AppStates {}
 class AppCreateNoteErrorState extends AppStates {
 
-  final String error;
-
-  AppCreateNoteErrorState(this.error);
 }
 
 //changeBottom

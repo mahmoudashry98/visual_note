@@ -120,12 +120,13 @@ class CreateNoteScreen extends StatelessWidget {
                         String formattedDate =
                             DateFormat.MMMEd().add_jm().format(now);
                         if (formKey.currentState!.validate()) {
-                          AppCubit.get(context).uploadNote(
-                            dateTime: formattedDate.toString(),
-                            title: titleController.text,
-                            description: descriptionController.text,
-                            status: AppCubit.get(context).value,
+                          AppCubit.get(context).uploadNoteImage(
+                              title: titleController.text,
+                              description: descriptionController.text,
+                              dateTime: formattedDate.toString(),
+                              status: AppCubit.get(context).value,
                           );
+
                         }
                       },
                       padding:

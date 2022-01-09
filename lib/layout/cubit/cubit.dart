@@ -98,9 +98,16 @@ class AppCubit extends Cubit<AppStates> {
         emit(AppGetNotesErrorState(error.toString()));
       });
   }
-  String imageNote = '';
 
-  void uploadImage(){
+  // void removeNote(){
+  //   notes = [];
+  // }
+  // String imageNote = '';
+
+  void uploadImage({
+    required String title,
+    required String description,
+}){
     emit(AppUploadImageLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -117,44 +124,38 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void updateNote({
-
-    required String title,
-    required String description,
-    required String dateTime,
-    required bool status,
-
-  }){
-
-    AddNoteModel model = AddNoteModel(
-      title: title,
-      image: imageNote,
-      description: description,
-      dateTime: dateTime,
-      status: status,
-    );
-
-    FirebaseFirestore.instance
-        .collection('notes')
-        .doc()
-        .update(model.toMap())
-        .then((value){
-      getNotes();
-    })
-        .catchError((error){
-      emit(AppUpdateNoteErrorState(error.toString()));
-    });
-  }
-
-
-  void uploadNote({
-    required String title,
-    required String description,
-    required bool status,
-    required String dateTime,
-
-  })
-  {
+  // void updateNote({
+  //   required String title,
+  //   required String description,
+  //
+  // }){
+  //
+  //   AddNoteModel model = AddNoteModel(
+  //     title: title,
+  //     image: imageNote,
+  //     description: description,
+  //     dateTime: noteModel!.dateTime,
+  //     status: noteModel!.status,
+  //     id: userModel!.uId,
+  //   );
+  //
+  //   FirebaseFirestore.instance
+  //       .collection('notes')
+  //       .doc(userModel!.uId)
+  //       .update(model.toMap())
+  //       .then((value){
+  //     getNotes();
+  //   })
+  //       .catchError((error){
+  //     emit(AppUpdateNoteErrorState(error.toString()));
+  //   });
+  // }
+  void uploadNoteImage({
+  required String title,
+  required String description,
+  required String dateTime,
+  required bool status,
+}){
     emit(AppCreateNoteLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -162,15 +163,42 @@ class AppCubit extends Cubit<AppStates> {
         .pathSegments.last}')
         .putFile(noteImage!)
         .then((value) {
-      value.ref.getDownloadURL().then((value) {
-        imageNote =value;
+      value.ref.getDownloadURL().then((value){
+        print(value);
+        createNote(
+            title: title,
+            description: description,
+            status: status,
+            dateTime: dateTime,
+            image: value,
+        );
+      }).catchError((error) {
+        emit(AppCreateNoteErrorState());
+        print(value);
+      });
+    }).catchError((error) {
+      emit(AppCreateNoteErrorState());
+    });
+  }
+
+  void createNote({
+    required String title,
+    required String description,
+    required bool status,
+    required String dateTime,
+    required String image,
+
+  })
+  {
+    emit(AppCreateNoteLoadingState());
+
           AddNoteModel model = AddNoteModel(
             title: title,
             description:description ,
             status: status,
             dateTime: dateTime,
-            image: value,
-
+            image: image,
+            id: uId,
           );
 
                 FirebaseFirestore.instance
@@ -181,14 +209,12 @@ class AppCubit extends Cubit<AppStates> {
                   emit(AppCreateNoteSuccessState());
                 })
                     .catchError((error){
-                  emit(AppCreateNoteErrorState(error.toString()));
+                  emit(AppCreateNoteErrorState());
                 });
-            emit(AppCreateNoteSuccessState());
-          }).catchError((error) {
-            emit(AppCreateNoteErrorState(error.toString()));
-          });
-      });
+
 
   }
+
+
 
 }

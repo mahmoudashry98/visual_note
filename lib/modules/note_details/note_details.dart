@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visual_note/layout/cubit/cubit.dart';
 import 'package:visual_note/layout/cubit/states.dart';
 import 'package:visual_note/models/add_note_model.dart';
+import 'package:visual_note/modules/creates_note/create_notes.dart';
 import 'package:visual_note/modules/edit_note/edit_note_screen.dart';
 import 'package:visual_note/shared/components/components.dart';
 
@@ -64,7 +65,10 @@ class NoteDetailsScreen extends StatelessWidget {
                 height: 20,
               ),
               FloatingActionButton(
-                onPressed: (){},
+                onPressed: (){
+                  // AppCubit.get(context).removeNote();
+                  // navigateAndFinish(context, CreateNoteScreen());
+                },
                 child: Icon(Icons.delete,),
                 backgroundColor:Colors.black,
               ),

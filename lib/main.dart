@@ -50,8 +50,7 @@ class MyApp extends StatelessWidget {
 
               ),
               debugShowCheckedModeBanner: false,
-              home: LoginScreen(),
-              //startWidget,
+              home: startWidget,
             );
           }),
     );

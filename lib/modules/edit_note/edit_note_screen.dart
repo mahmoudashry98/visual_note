@@ -28,13 +28,13 @@ class EditNote extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                  AppCubit.get(context).updateNote(
-                      title: titleController.text,
-                      description: descriptionController.text,
-                    status: model.status,
-                    dateTime: model.dateTime,
-
-                  );
+                  // AppCubit.get(context).updateNote(
+                  //     title: titleController.text,
+                  //     description: descriptionController.text,
+                  //   status: model.status,
+                  //   dateTime: model.dateTime,
+                  //
+                  // );
                 },
                 child: Text(
                   'Update',
