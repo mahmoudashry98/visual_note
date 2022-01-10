@@ -5,6 +5,7 @@ import 'package:visual_note/modules/login/cubit/cubit.dart';
 import 'package:visual_note/modules/register/register_screen.dart';
 import 'package:visual_note/shared/components/components.dart';
 import 'package:visual_note/shared/components/constants.dart';
+import 'package:visual_note/shared/components/constants.dart';
 import 'package:visual_note/shared/network/local/cache_helper.dart';
 import 'cubit/state.dart';
 
@@ -26,10 +27,12 @@ class LoginScreen extends StatelessWidget {
                 backgroundColor: Colors.green,
               ));
 
+
               print(CacheHelper.getData(key: 'uId').toString());
               navigateAndFinish(context, HomeLayoutScreen());
             });
           }
+
         },
         builder: (context, state) {
           return Scaffold(

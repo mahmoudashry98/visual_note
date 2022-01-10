@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visual_note/layout/cubit/cubit.dart';
 import 'package:visual_note/layout/cubit/states.dart';
 import 'package:visual_note/models/add_note_model.dart';
-import 'package:visual_note/modules/creates_note/create_notes.dart';
 import 'package:visual_note/modules/edit_note/edit_note_screen.dart';
 import 'package:visual_note/shared/components/components.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 class NoteDetailsScreen extends StatelessWidget {
   final AddNoteModel model;
@@ -31,7 +32,8 @@ class NoteDetailsScreen extends StatelessWidget {
                 Container(
                     height: 550,
                     width: double.infinity,
-                    child: Image.network(model.image)),
+                    child: Image.network((model.image)),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -51,7 +53,7 @@ class NoteDetailsScreen extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: Column(
+          floatingActionButton: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FloatingActionButton(
@@ -62,16 +64,18 @@ class NoteDetailsScreen extends StatelessWidget {
                 backgroundColor:Colors.amber,
               ),
               SizedBox(
-                height: 20,
+                width: 20,
               ),
-              FloatingActionButton(
-                onPressed: (){
-                  // AppCubit.get(context).removeNote();
-                  // navigateAndFinish(context, CreateNoteScreen());
-                },
-                child: Icon(Icons.delete,),
-                backgroundColor:Colors.black,
-              ),
+              // FloatingActionButton(
+              //   onPressed: (){
+              //
+              //     // FirebaseFirestore.instance.collection('notes')
+              //     //     .doc(uId).delete();
+              //     // print('item delete');
+              //   },
+              //   child: Icon(Icons.delete,),
+              //   backgroundColor:Colors.black,
+              // ),
             ],
           ),
 

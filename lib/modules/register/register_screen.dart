@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visual_note/layout/cubit/cubit.dart';
 import 'package:visual_note/layout/home_layout.dart';
 import 'package:visual_note/modules/login/login_screen.dart';
 import 'package:visual_note/modules/register/cubit/states.dart';
 import 'package:visual_note/shared/components/components.dart';
+import 'package:visual_note/shared/components/constants.dart';
+import 'package:visual_note/shared/components/constants.dart';
+import 'package:visual_note/shared/components/constants.dart';
+import 'package:visual_note/shared/network/local/cache_helper.dart';
 
 import 'cubit/cubit.dart';
 
@@ -20,14 +25,19 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => VisualNoteRegisterCubit(),
       child: BlocConsumer<VisualNoteRegisterCubit, VisualNoteRegisterStates>(
         listener: (context, state) {
-          if(state is VisualNoteRegisterSuccessState)
-          {
-            navigateAndFinish(context, HomeLayoutScreen());
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Thanks for Sign Up'),
-              duration: Duration(seconds: 4),
-              backgroundColor: Colors.green,
-            ));
+          if (state is VisualNoteRegisterSuccessState) {
+            CacheHelper.saveData(
+              key: 'uId',
+              value: state.uId,
+            ).then((value) async {
+              AppCubit.get(context).getNotes();
+              AppCubit.get(context).getUsers();
+
+              navigateAndFinish(
+                context,
+                HomeLayoutScreen(),
+              );
+            });
           }
         },
         builder: (context, state) {

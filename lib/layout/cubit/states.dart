@@ -24,7 +24,9 @@ class AppGetNotesErrorState extends AppStates {
 class AppCreateNoteLoadingState extends AppStates {}
 class AppCreateNoteSuccessState extends AppStates {}
 class AppCreateNoteErrorState extends AppStates {
+  final String error;
 
+  AppCreateNoteErrorState(this.error);
 }
 
 //changeBottom
@@ -48,6 +50,7 @@ class AppUploadImageErrorState extends AppStates {
 
 //addNote
 class AppAddNoteLoadingState extends AppStates {}
+class AppDeleteState extends AppStates {}
 class AppAddNoteSuccessState extends AppStates {}
 class AppAddNoteErrorState extends AppStates {
   final String error;
@@ -56,11 +59,21 @@ class AppAddNoteErrorState extends AppStates {
 }
 
 //updateNote
+class AppUpdateNoteLoadingState extends AppStates {}
 class AppUpdateNoteErrorState extends AppStates {
   final String error;
 
   AppUpdateNoteErrorState(this.error);
 }
+
+//saveNoteId
+class VisualNoteIdSuccessState extends AppStates {
+
+  final String id;
+
+  VisualNoteIdSuccessState(this.id);
+}
+
 
 
 

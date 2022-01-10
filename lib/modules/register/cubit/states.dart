@@ -11,7 +11,12 @@ class VisualNoteRegisterErrorState extends VisualNoteRegisterStates {
   VisualNoteRegisterErrorState(this.error);
 }
 
-class VisualNoteRegisterSuccessState extends VisualNoteRegisterStates {}
+class VisualNoteRegisterSuccessState extends VisualNoteRegisterStates {
+
+  final String uId;
+
+  VisualNoteRegisterSuccessState(this.uId);
+}
 
 
 class VisualNoteCreateUserSuccessState extends VisualNoteRegisterStates {

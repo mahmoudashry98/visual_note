@@ -8,6 +8,7 @@ import 'package:visual_note/shared/components/components.dart';
 class EditNote extends StatelessWidget {
 
   final AddNoteModel model;
+
   const EditNote({required this.model});
 
   @override
@@ -29,12 +30,13 @@ class EditNote extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   // AppCubit.get(context).updateNote(
-                  //     title: titleController.text,
-                  //     description: descriptionController.text,
-                  //   status: model.status,
-                  //   dateTime: model.dateTime,
-                  //
+                  //   title: titleController.text,
+                  //   description: descriptionController.text,
+                  //   image: model.image,
+                  //   dateTime: model.dateTime!,
+                  //   status: model.status!,
                   // );
+                  // print(AppCubit.get(context).ID);
                 },
                 child: Text(
                   'Update',
@@ -49,6 +51,12 @@ class EditNote extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               children: [
+                if (state is AppAddNoteLoadingState)
+                  LinearProgressIndicator(),
+                if (state is AppAddNoteLoadingState)
+                  SizedBox(
+                    height: 10.0,
+                  ),
                 Stack(
                   alignment: AlignmentDirectional.topEnd,
                   children: [
@@ -69,7 +77,7 @@ class EditNote extends StatelessWidget {
                         backgroundColor: Colors.white,
                         radius: 20,
                         child: Icon(
-                            Icons.camera_alt,
+                          Icons.camera_alt,
                           color: Colors.amber,
                           size: 15,
                         ),

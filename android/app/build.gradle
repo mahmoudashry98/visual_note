@@ -38,6 +38,7 @@ android {
         applicationId "com.example.visual_note"
         minSdkVersion 22
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

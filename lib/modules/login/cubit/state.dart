@@ -11,6 +11,7 @@ class VisualNoteLoginSuccessState extends VisualNoteLoginStates {
   VisualNoteLoginSuccessState(this.uId);
 }
 
+
 class VisualNoteLoginErrorState extends VisualNoteLoginStates {
   final String error;
 

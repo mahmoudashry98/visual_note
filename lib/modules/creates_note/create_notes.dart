@@ -93,7 +93,7 @@ class CreateNoteScreen extends StatelessWidget {
                     Text(
                       'Status',
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     Checkbox(
                       checkColor: Colors.white,
@@ -118,19 +118,19 @@ class CreateNoteScreen extends StatelessWidget {
                       onPressed: () {
                         var now = DateTime.now();
                         String formattedDate =
-                            DateFormat.MMMEd().add_jm().format(now);
+                        DateFormat.MMMEd().add_jm().format(now);
                         if (formKey.currentState!.validate()) {
-                          AppCubit.get(context).uploadNoteImage(
-                              title: titleController.text,
-                              description: descriptionController.text,
-                              dateTime: formattedDate.toString(),
-                              status: AppCubit.get(context).value,
+                          AppCubit.get(context).uploadNoteWithImage(
+                            title: titleController.text,
+                            description: descriptionController.text,
+                            dateTime: formattedDate.toString(),
+                            status: AppCubit.get(context).value,
                           );
 
                         }
                       },
                       padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                       color: Colors.amber,

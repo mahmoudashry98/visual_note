@@ -47,14 +47,12 @@ class VisualNoteRegisterCubit extends Cubit<VisualNoteRegisterStates> {
       email: email,
       uId: uId,
     );
-
-
     FirebaseFirestore.instance
         .collection('Users')
         .doc(uId)
         .set(userModel.toMap())
         .then((value) {
-      emit(VisualNoteRegisterSuccessState());
+      emit(VisualNoteRegisterSuccessState(uId));
     });
   }
 }

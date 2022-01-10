@@ -26,7 +26,11 @@ class NotesScreen extends StatelessWidget {
             ),
             itemCount: AppCubit.get(context).notes.length,
           ),
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => AppCubit.get(context).notes.length == 0
+              ? Center(
+                  child: Text('No Item'),
+                )
+              : Center(child: CircularProgressIndicator()),
         );
       },
     );
@@ -34,8 +38,13 @@ class NotesScreen extends StatelessWidget {
 
   Widget buildProductItem({required AddNoteModel model, context, index}) {
     return InkWell(
-      onTap: (){
-        navigateTo(context, NoteDetailsScreen(model:  AppCubit.get(context).notes[index], index: index,));
+      onTap: () {
+        navigateTo(
+            context,
+            NoteDetailsScreen(
+              model: AppCubit.get(context).notes[index],
+              index: index,
+            ));
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -61,18 +70,26 @@ class NotesScreen extends StatelessWidget {
                 child: Container(
                   height: 120,
                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        model.title,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                        ),
-                        maxLines: 1,
+                      Row(
+                        children: [
+                          Text(
+                            model.title,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            maxLines: 1,
+                          ),
+                          Spacer(),
+                          IconButton(
+                              icon: Icon(Icons.delete), onPressed: () {
+                                // AppCubit.get(context).removeNote();
+                          }),
+                        ],
                       ),
-
                       SizedBox(
                         height: 5,
                       ),
@@ -83,11 +100,10 @@ class NotesScreen extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                         ),
                         maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      model.status
+                      Spacer(),
+                      model.status!
                           ? Text(
                               'Opened',
                               style: TextStyle(
@@ -103,7 +119,7 @@ class NotesScreen extends StatelessWidget {
                               ),
                             ),
                       Text(
-                        model.dateTime,
+                        model.dateTime!,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
@@ -114,7 +130,6 @@ class NotesScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

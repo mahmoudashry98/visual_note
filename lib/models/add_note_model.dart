@@ -1,19 +1,18 @@
-
 class AddNoteModel {
   String? id;
   late String title;
   late String image;
   late String description;
-  late String dateTime;
-  late bool status=false;
+   String? dateTime;
+   bool? status=false;
 
   AddNoteModel({
-     this.id,
+    this.id,
     required this.title,
     required this.image,
     required this.description,
-    required this.dateTime,
-    required this.status,
+     this.dateTime,
+     this.status,
   });
 
   AddNoteModel.fromJson(Map<String, dynamic> json) {
